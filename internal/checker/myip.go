@@ -5,3 +5,6 @@ type myIP struct {
 	Country string `json:"country"`
 	IP      string `json:"ip"`
 }
+type myIPhttpBin struct{
+	Origin string `json:"origin"`
+}

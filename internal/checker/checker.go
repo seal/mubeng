@@ -26,7 +26,7 @@ func Do(opt *common.Options) {
 		address := helper.EvalFunc(proxy)
 
 		p.Go(func() {
-			addr, err := check(address, opt.Timeout)
+			addr, err := check(opt.HttpBin, address, opt.Timeout)
 			if len(opt.Countries) > 0 && !isMatchCC(opt.Countries, addr.CC) {
 				return
 			}
@@ -62,8 +62,14 @@ func isMatchCC(cc []string, code string) bool {
 	return false
 }
 
-func check(address string, timeout time.Duration) (myIP, error) {
-	req, err := http.NewRequest("GET", endpoint, nil)
+func check(httpbin bool, address string, timeout time.Duration) (myIP, error) {
+	var ep string
+	if httpbin {
+		ep = "http://httpbin.org/ip"
+	} else {
+		ep = endpoint
+	}
+	req, err := http.NewRequest("GET", ep, nil)
 	if err != nil {
 		return myip, err
 	}
@@ -91,14 +97,25 @@ func check(address string, timeout time.Duration) (myIP, error) {
 	if err != nil {
 		return myip, err
 	}
-
-	err = json.Unmarshal([]byte(body), &myip)
-	if err != nil {
-		return myip, err
-	}
-
 	defer resp.Body.Close()
 	defer tr.CloseIdleConnections()
+	if httpbin {
+
+		var myIPhttpBin myIPhttpBin
+		err = json.Unmarshal([]byte(body), &myIPhttpBin)
+		if err != nil {
+			return myip, err
+		}
+		return myIP{
+			IP: myIPhttpBin.Origin,
+		}, nil
+
+	} else {
+		err = json.Unmarshal([]byte(body), &myip)
+		if err != nil {
+			return myip, err
+		}
+	}
 
 	return myip, nil
 }

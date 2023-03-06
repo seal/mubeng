@@ -17,6 +17,7 @@ type Options struct {
 	Auth      string
 	CC        string
 	Check     bool
+	HttpBin  bool
 	Countries []string
 	Daemon    bool
 	File      string

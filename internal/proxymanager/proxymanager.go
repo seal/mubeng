@@ -54,6 +54,5 @@ func New(filename string) (*ProxyManager, error) {
 	if manager.Length < 1 {
 		return manager, fmt.Errorf("open %s: has no valid proxy URLs", filename)
 	}
-
 	return manager, scanner.Err()
 }

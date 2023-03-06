@@ -142,6 +142,7 @@ Here are all the options it supports.
 | -A, --auth `<USER>:<PASS>`      | Set authorization for proxy server.                           |
 | -d, --daemon                    | Daemonize proxy server.                                       |
 | -c, --check                     | To perform proxy live check.                                  |
+| -h, --httpbin			  | Change IP checking to httpBin.                                |
 | -g, --goroutine `<N>`           | Max. goroutine to use (default: 10).                          |
 |     --only-cc `<AA>,<BB>`       | Only show specific country code (comma separated).            |
 | -t, --timeout                   | Max. time allowed for proxy server/check (default: 30s).      |
